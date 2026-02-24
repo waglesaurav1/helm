@@ -1,0 +1,61 @@
+### deployment
+namespace: saurav-ns
+
+replicas: 5
+
+deployment:
+  matchLabels:
+    app: vegetable
+
+containers:
+  name: vegetable
+  repository: saurav2059/vegetable-app
+  tag: v1.0.0
+  ports:
+    containerPort: 3000
+  env:
+    name: MONGODB_URI
+    valueFrom:
+      configMapKeyRef:
+        name: veg-config
+        key: MONGO_URL
+
+
+#### veg app svc 
+
+service:
+  type: LoadBalancer
+  app: vegetable
+  port: 80
+
+
+## config 
+
+MONGO_INITDB_DATABASE: "vegetable_order_app"
+
+
+### mongodeployment ###3
+
+mongodeploy:
+  replicas: 4
+  serviceName: "mongodb-svc"
+  app: mongodb
+  image: mongo
+  tag: latest
+  port: 27017
+
+  storageClassName: veg-sc
+  storage: 1Gi
+
+
+### storageclass 
+
+provisioner: ebs.csi.aws.com
+storageclass: 
+  reclaimPolicy: Retain 
+  volumeBindingMode: WaitForFirstConsumer
+
+#### pvc ###
+
+pvc:
+   storage: 2Gi 

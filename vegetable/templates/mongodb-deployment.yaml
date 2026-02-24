@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.mongodeploy.replicas }}
+  serviceName: {{ .Values.mongodeploy.serviceName }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mongodeploy.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mongodeploy.app}}
+    spec:
+      containers:
+      - name: {{ .Values.mongodeploy.app }}-container
+        image: "{{ .Values.mongodeploy.image }}:{{ .Values.mongodeploy.tag }}"
+        ports:
+        - containerPort: {{ .Values.mongodeploy.port }}
+        volumeMounts:
+          - mountPath: /data/db
+            name: mongo-data
+        env:
+        - name: MONGO_INITDB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-config
+              key: MONGO_INITDB_DATABASE
+
+  volumeClaimTemplates:  # it is referencing pvc automatically instead of refering pvc manually in the pod or yaml file
+    - metadata:
+        name: mongo-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: {{ .Values.mongodeploy.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.mongodeploy.storage }}

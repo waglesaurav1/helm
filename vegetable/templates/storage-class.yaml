@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Release.Name }}-sc
+  namespace: {{ .Values.namespace }} 
+provisioner: {{ .Values.provisioner }}
+parameters:
+  type: gp3  # general purpose SSD (gp3, gp2)
+reclaimPolicy: {{ .Values.storageclass.reclaimPolicy }}
+volumeBindingMode: {{ .Values.storageclass.volumeBindingMode }}
