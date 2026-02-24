@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vegetable-deployment
+  namespace: saurav-ns
+
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: vegetable
+  
+  template:
+    metadata:
+      labels:
+        app: vegetable
+
+    spec:
+      containers:
+        - name: vegetable
+          image: saurav2059/vegetable-app:v1.0.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: veg-config
+                  key: MONGO_URL
