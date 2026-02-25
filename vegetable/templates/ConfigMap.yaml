@@ -4,6 +4,6 @@ metadata:
   name: {{ .Release.Name }}-config
   namespace: {{ .Values.namespace }}
 data:
-  MONGO_URL: "mongodb://mongodb-svc:27017/vegetable_order_app"
-  MONGO_INITDB_DATABASE: {{ .Values.MONGO_INITDB_DATABASE}}
+  MONGO_URL: {{ .Values.config.MONGO_URI }}
+  MONGO_INITDB_DATABASE: {{ .Values.config.MONGO_INITDB_DATABASE }}
 

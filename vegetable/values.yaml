@@ -31,7 +31,10 @@ service:
 
 ## config 
 
-MONGO_INITDB_DATABASE: "vegetable_order_app"
+config:
+  MONGO_INITDB_DATABASE: "vegetable_order_app"
+
+  MONGO_URL: "mongodb://mongodb-svc:27017/vegetable_order_app"
 
 
 ### mongodeployment ###3
@@ -47,6 +50,9 @@ mongodeploy:
   storageClassName: veg-sc
   storage: 1Gi
 
+# mongo svc
+clusterIP: None
+
 
 ### storageclass 
 
@@ -54,8 +60,11 @@ provisioner: ebs.csi.aws.com
 storageclass: 
   reclaimPolicy: Retain 
   volumeBindingMode: WaitForFirstConsumer
+storageclass:
+  type: gp3 
 
 #### pvc ###
 
 pvc:
-   storage: 2Gi 
+  storage: 2Gi 
+  

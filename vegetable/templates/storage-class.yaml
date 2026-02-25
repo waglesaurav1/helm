@@ -5,6 +5,6 @@ metadata:
   namespace: {{ .Values.namespace }} 
 provisioner: {{ .Values.provisioner }}
 parameters:
-  type: gp3  # general purpose SSD (gp3, gp2)
+  type: {{ .Values.storage.type }}  # general purpose SSD (gp3, gp2)
 reclaimPolicy: {{ .Values.storageclass.reclaimPolicy }}
 volumeBindingMode: {{ .Values.storageclass.volumeBindingMode }}
