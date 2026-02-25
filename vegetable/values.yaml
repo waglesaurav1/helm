@@ -52,7 +52,7 @@ mongodeploy:
 
 # mongo svc
 clusterIP: None
-
+protocol: TCP
 
 ### storageclass 
 

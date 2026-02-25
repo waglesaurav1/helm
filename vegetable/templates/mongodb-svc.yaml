@@ -9,5 +9,5 @@ spec:
   ports:
     - port: {{ .Values.mongodeploy.port }}
       targetPort:  {{ .Values.mongodeploy.port }}
-      protocol: TCP
+      protocol: {{ .Values.protocol }}
   clusterIP: {{ .Values.clusterIP }}
